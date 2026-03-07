@@ -29,3 +29,4 @@ yarn-error.log*
 *.swo
 *.config.js
 *.config.cjs
+!vite.config.js
