@@ -60,6 +60,21 @@ npm run build
 Output directory:
 dist
 
+### Frontend en GitHub Pages (opcion para pruebas)
+
+Se agrego workflow automatico:
+.github/workflows/deploy-pages.yml
+
+Pasos para activarlo:
+1. En GitHub: Settings > Pages > Build and deployment > Source: GitHub Actions.
+2. Configurar secrets del repositorio:
+- VITE_SUPABASE_URL
+- VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY
+3. Push a main o ejecutar workflow_dispatch.
+
+URL esperada:
+https://TU_USUARIO.github.io/TU_REPO/
+
 ### Automatizacion de backend con GitHub Actions
 
 El workflow esta en:
