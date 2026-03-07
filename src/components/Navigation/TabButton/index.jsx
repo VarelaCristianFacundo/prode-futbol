@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback } from 'react'
+import { forwardRef, memo, useCallback } from 'react'
 
 const TabButton = forwardRef(function TabButton({ tab, isActive, onClick }, ref) {
   const handleClick = useCallback(() => {
@@ -87,4 +87,4 @@ const TabButton = forwardRef(function TabButton({ tab, isActive, onClick }, ref)
   )
 })
 
-export default React.memo(TabButton)
+export default memo(TabButton)

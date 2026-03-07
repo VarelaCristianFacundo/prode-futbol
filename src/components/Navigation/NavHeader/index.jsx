@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import UserBadge from '../UserBadge'
 import ThemeToggle from '../../Common/ThemeToggle'
 import styles from './NavHeader.module.css'
@@ -23,4 +23,4 @@ function NavHeader({ profile, onNavigate, signOut }) {
   )
 }
 
-export default React.memo(NavHeader)
+export default memo(NavHeader)

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
 import TabButton from '../TabButton'
 
 function NavTabs({ tabs, activeTab, setActiveTab }) {
@@ -67,4 +67,4 @@ function NavTabs({ tabs, activeTab, setActiveTab }) {
   )
 }
 
-export default React.memo(NavTabs)
+export default memo(NavTabs)
