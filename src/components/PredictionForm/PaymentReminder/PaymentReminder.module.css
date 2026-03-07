@@ -1,0 +1,46 @@
+/* Payment Reminder Banner - Compact & Simple */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-left: 4px solid #f59e0b;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+.icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.message {
+  color: #78350f;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.message strong {
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .container {
+    padding: 14px 20px;
+  }
+
+  .icon {
+    font-size: 1.75rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,29 @@
+.themeToggle {
+  background-color: transparent;
+  border: 2px solid var(--color-border);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.themeToggle:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+}
+
+.themeToggle:active {
+  transform: scale(0.95);
+}
+
+.icon {
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

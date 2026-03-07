@@ -1,0 +1,140 @@
+/* Section Navigation - Reutilizable - Mobile First */
+
+.container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: var(--color-surface-variant);
+  border-radius: 2px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+.navButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+  flex: 1;
+}
+
+.navButton:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface-highlight);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.navButtonActive {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+}
+
+.navButtonActive:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.navIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.navButtonActive .navIcon {
+  filter: brightness(1.1);
+}
+
+.navLabel {
+  font-size: 0.875rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Variantes */
+.variantDefault {
+  /* Default ya está definido arriba */
+}
+
+.variantCompact {
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.variantCompact .navButton {
+  padding: 8px 12px;
+  min-width: 80px;
+  gap: 4px;
+}
+
+.variantCompact .navIcon {
+  font-size: 1.5rem;
+}
+
+.variantCompact .navLabel {
+  font-size: 0.75rem;
+}
+
+/* Hide on Mobile */
+.hideOnMobile {
+  display: none;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .container {
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .navButton {
+    flex-direction: row;
+    gap: 10px;
+    padding: 16px 24px;
+    min-width: auto;
+  }
+
+  .navIcon {
+    font-size: 1.5rem;
+  }
+
+  .navLabel {
+    font-size: 1rem;
+  }
+
+  .hideOnMobile {
+    display: flex;
+  }
+}
+
+@media (min-width: 768px) {
+  .navButton {
+    flex: 0 1 auto;
+  }
+
+  .navLabel {
+    font-size: 1.125rem;
+  }
+}

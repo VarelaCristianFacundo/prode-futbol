@@ -1,0 +1,66 @@
+name: Refresh Sports Data
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Refresh fixtures and sync results
+        run: npm run refresh:data
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          IMPORT_PROVIDER: ${{ secrets.IMPORT_PROVIDER }}
+          IMPORT_SEASON: ${{ secrets.IMPORT_SEASON }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_BASE_URL: ${{ secrets.API_FOOTBALL_BASE_URL }}
+          API_FOOTBALL_LEAGUE_ID: ${{ secrets.API_FOOTBALL_LEAGUE_ID }}
+          API_FOOTBALL_USE_RAPIDAPI: ${{ secrets.API_FOOTBALL_USE_RAPIDAPI }}
+          API_FOOTBALL_HOST: ${{ secrets.API_FOOTBALL_HOST }}
+          THESPORTSDB_FREE_KEY: ${{ secrets.THESPORTSDB_FREE_KEY }}
+          THESPORTSDB_BASE_URL: ${{ secrets.THESPORTSDB_BASE_URL }}
+          THESPORTSDB_LEAGUE_ID: ${{ secrets.THESPORTSDB_LEAGUE_ID }}
+          THESPORTSDB_MAX_ROUNDS: ${{ secrets.THESPORTSDB_MAX_ROUNDS }}
+          THESPORTSDB_EMPTY_ROUNDS_STOP: ${{ secrets.THESPORTSDB_EMPTY_ROUNDS_STOP }}
+          THESPORTSDB_REQUEST_DELAY_MS: ${{ secrets.THESPORTSDB_REQUEST_DELAY_MS }}
+          THESPORTSDB_MAX_RETRIES: ${{ secrets.THESPORTSDB_MAX_RETRIES }}
+          THESPORTSDB_RETRY_BASE_MS: ${{ secrets.THESPORTSDB_RETRY_BASE_MS }}
+          THESPORTSDB_SECOND_STAGE_MONTH: ${{ secrets.THESPORTSDB_SECOND_STAGE_MONTH }}
+          ROUND_OPEN_LOOKAHEAD_HOURS: ${{ secrets.ROUND_OPEN_LOOKAHEAD_HOURS }}
+          ROUND_FORCE_FINISHED_AFTER_HOURS: ${{ secrets.ROUND_FORCE_FINISHED_AFTER_HOURS }}
+          SYNC_LOOKBACK_HOURS: ${{ secrets.SYNC_LOOKBACK_HOURS }}
+          SYNC_LOOKAHEAD_HOURS: ${{ secrets.SYNC_LOOKAHEAD_HOURS }}
+          THESPORTSDB_SYNC_DELAY_MS: ${{ secrets.THESPORTSDB_SYNC_DELAY_MS }}
+
+      - name: Recompute rounds
+        run: npm run recompute:rounds
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          IMPORT_SEASON: ${{ secrets.IMPORT_SEASON }}
+          THESPORTSDB_SECOND_STAGE_MONTH: ${{ secrets.THESPORTSDB_SECOND_STAGE_MONTH }}
+          ROUND_OPEN_LOOKAHEAD_HOURS: ${{ secrets.ROUND_OPEN_LOOKAHEAD_HOURS }}
+          ROUND_FORCE_FINISHED_AFTER_HOURS: ${{ secrets.ROUND_FORCE_FINISHED_AFTER_HOURS }}

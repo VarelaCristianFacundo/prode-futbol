@@ -1,0 +1,73 @@
+.card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border-left: 4px solid;
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+  min-height: 120px;
+}
+
+.card.best {
+  border-left-color: var(--color-success);
+}
+
+.card.worst {
+  border-left-color: var(--color-error);
+}
+
+.icon {
+  font-size: 2.5rem;
+  min-width: 3rem;
+}
+
+.content {
+  flex: 1;
+}
+
+.label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.roundNumber {
+  margin: 0.75rem 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.points {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1rem;
+    gap: 1rem;
+    min-height: auto;
+  }
+
+  .icon {
+    font-size: 2rem;
+  }
+
+  .roundNumber {
+    font-size: 1.1rem;
+  }
+
+  .points {
+    font-size: 0.95rem;
+  }
+}

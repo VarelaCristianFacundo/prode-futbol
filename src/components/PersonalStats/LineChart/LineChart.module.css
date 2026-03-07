@@ -1,0 +1,114 @@
+.container {
+  width: 100%;
+  height: 400px;
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.chart {
+  overflow: visible;
+}
+
+.line {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gridLine {
+  stroke: var(--color-border);
+  stroke-width: 1;
+  stroke-dasharray: 4, 4;
+  opacity: 0.5;
+}
+
+.axis {
+  stroke: var(--color-text-primary);
+  stroke-width: 1.5;
+}
+
+.axisLabel {
+  font-size: 12px;
+  fill: var(--color-text-secondary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.axisTitle {
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.pointGroup {
+  cursor: pointer;
+}
+
+.pointHitArea {
+  fill: transparent;
+}
+
+.point {
+  fill: var(--color-primary);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.tooltipLine {
+  stroke: var(--color-primary);
+  stroke-width: 1;
+  stroke-dasharray: 4, 4;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.tooltipBox {
+  fill: var(--color-primary);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  opacity: 0.95;
+}
+
+.tooltipText {
+  font-size: 12px;
+  font-weight: 600;
+  fill: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  pointer-events: none;
+}
+
+.tooltipValue {
+  font-size: 14px;
+  font-weight: 700;
+  fill: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .container {
+    height: 300px;
+    padding: 1rem;
+  }
+
+  .axisLabel {
+    font-size: 10px;
+  }
+
+  .axisTitle {
+    font-size: 12px;
+  }
+
+  .tooltipText {
+    font-size: 11px;
+  }
+
+  .tooltipValue {
+    font-size: 12px;
+  }
+}

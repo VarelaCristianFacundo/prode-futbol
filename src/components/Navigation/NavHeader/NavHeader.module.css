@@ -1,0 +1,52 @@
+.prodeHeader {
+  background-color: var(--color-surface);
+  padding-top: 12px;
+  padding-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  font-family: sans-serif;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoContainer {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.brandInfo h1 {
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.brandInfo p {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  margin: 4px 0 0 0;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

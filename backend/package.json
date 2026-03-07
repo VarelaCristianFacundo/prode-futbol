@@ -1,0 +1,16 @@
+{
+  "name": "prode-backend-jobs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "import:fixtures": "node jobs/import-fixtures.mjs",
+    "recompute:rounds": "node jobs/recompute-rounds.mjs",
+    "refresh:data": "node jobs/import-fixtures.mjs && node jobs/sync-results.mjs",
+    "sync:results": "node jobs/sync-results.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
+    "dotenv": "^16.6.1"
+  }
+}
