@@ -546,16 +546,75 @@ function normalizeEventsToMatches(events, teamBySlug) {
 async function upsertMatches(matches) {
   if (matches.length === 0) return []
 
-  const { data, error } = await supabase
-    .from('matches')
-    .upsert(matches, { onConflict: 'round_number,match_number', ignoreDuplicates: false })
-    .select('id, round_number, match_number, external_match_id')
+  // Separate matches that can be looked up by external ID (stable) from those that can't
+  const withExternalId = matches.filter(m => m.external_provider && m.external_match_id)
+  const withoutExternalId = matches.filter(m => !m.external_provider || !m.external_match_id)
 
-  if (error) {
-    throw new Error(`Unable to upsert matches: ${error.message}`)
+  const results = []
+
+  if (withExternalId.length > 0) {
+    // Fetch which of these already exist in the DB to avoid duplicate-key errors
+    // when match_number shifts due to date changes (sort-order changes position)
+    const { data: existing, error: fetchError } = await supabase
+      .from('matches')
+      .select('id, external_provider, external_match_id')
+      .in('external_match_id', withExternalId.map(m => m.external_match_id))
+
+    if (fetchError) {
+      throw new Error(`Unable to fetch existing matches by external ID: ${fetchError.message}`)
+    }
+
+    const existingByKey = new Map(
+      (existing || []).map(row => [`${row.external_provider}:${row.external_match_id}`, row.id])
+    )
+
+    const toUpdate = []
+    const toInsert = []
+
+    for (const match of withExternalId) {
+      const key = `${match.external_provider}:${match.external_match_id}`
+      if (existingByKey.has(key)) {
+        // Preserve round_number and match_number so position-based unique constraints
+        // are not violated while other matches in the same round are being processed
+        const { round_number: _r, match_number: _m, ...updateFields } = match
+        toUpdate.push({ id: existingByKey.get(key), ...updateFields })
+      } else {
+        toInsert.push(match)
+      }
+    }
+
+    // Update existing records by PK
+    for (const { id, ...fields } of toUpdate) {
+      const { data, error } = await supabase
+        .from('matches')
+        .update(fields)
+        .eq('id', id)
+        .select('id, round_number, match_number, external_match_id')
+      if (error) throw new Error(`Unable to update match id=${id}: ${error.message}`)
+      if (data) results.push(...data)
+    }
+
+    // Insert truly new records by round/match position
+    if (toInsert.length > 0) {
+      const { data, error } = await supabase
+        .from('matches')
+        .upsert(toInsert, { onConflict: 'round_number,match_number', ignoreDuplicates: false })
+        .select('id, round_number, match_number, external_match_id')
+      if (error) throw new Error(`Unable to insert new matches: ${error.message}`)
+      if (data) results.push(...data)
+    }
   }
 
-  return data || []
+  if (withoutExternalId.length > 0) {
+    const { data, error } = await supabase
+      .from('matches')
+      .upsert(withoutExternalId, { onConflict: 'round_number,match_number', ignoreDuplicates: false })
+      .select('id, round_number, match_number, external_match_id')
+    if (error) throw new Error(`Unable to upsert matches: ${error.message}`)
+    if (data) results.push(...data)
+  }
+
+  return results
 }
 
 async function pruneStaleMatches(matches) {

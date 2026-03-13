@@ -155,14 +155,17 @@ async function getCandidateMatches() {
 
   const raw = data || []
 
-  // Always process unfinished matches, plus a configurable window around "now".
+  // Process unfinished matches up to the lookahead boundary (excludes far-future fixtures)
+  // plus finished matches within the lookback window (for re-verification).
   return raw.filter(match => {
-    if (!match.is_finished) {
-      return true
+    if (!match.match_date) {
+      return !match.is_finished
     }
 
-    if (!match.match_date) {
-      return false
+    if (!match.is_finished) {
+      // Include unfinished matches that have already started or start soon,
+      // but not fixtures scheduled weeks in the future.
+      return match.match_date <= toDate
     }
 
     return match.match_date >= fromDate && match.match_date <= toDate
