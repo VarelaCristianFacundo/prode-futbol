@@ -1,4 +1,5 @@
 import { useEffect, useCallback, memo, useRef } from 'react'
+import { Calendar, Clock, CircleDot, CheckCircle, XCircle } from 'lucide-react'
 import TeamDisplay from '../../Common/TeamDisplay'
 import InfoButton from '../../Common/InfoButton'
 
@@ -154,7 +155,7 @@ const MatchPrediction = ({
             animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           }}
         >
-          ⚽ En Juego
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CircleDot size={14} /></span> En Juego
         </div>
       ) : null}
 
@@ -173,7 +174,9 @@ const MatchPrediction = ({
             color: 'var(--color-text-secondary)',
           }}
         >
-          📅 {formattedDate} • 🕐 {formattedTime}
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.9rem', fontWeight: '600', color: 'var(--color-text-secondary)' }}>
+            <Calendar size={14} /> {formattedDate} <Clock size={14} style={{ marginLeft: '4px' }} /> {formattedTime}
+          </span>
         </span>
       </div>
 
@@ -327,9 +330,12 @@ const MatchPrediction = ({
                   marginBottom: '4px',
                   color: 'var(--color-text-primary)',
                   fontSize: '0.95rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
                 }}
               >
-                ⚽ Resultado Final:{' '}
+                <CircleDot size={16} /> Resultado Final:{' '}
                 <span style={{ fontSize: '1.2rem', fontWeight: '700' }}>
                   {match.home_score} - {match.away_score}
                 </span>
@@ -361,8 +367,8 @@ const MatchPrediction = ({
                   fontSize: '1.1rem',
                 }}
               >
-                <span style={{ fontSize: '1.5rem' }}>
-                  {existingPrediction.points > 0 ? '✅' : '❌'}
+                <span style={{ fontSize: '1.5rem', display: 'inline-flex', alignItems: 'center' }}>
+                  {existingPrediction.points > 0 ? <CheckCircle size={22} /> : <XCircle size={22} />}
                 </span>
                 <span>{existingPrediction.points || 0} pts</span>
               </div>

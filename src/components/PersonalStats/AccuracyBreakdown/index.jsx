@@ -1,3 +1,4 @@
+import { Target, CheckCircle, CircleDot, Zap } from 'lucide-react'
 import styles from './AccuracyBreakdown.module.css'
 
 export const AccuracyBreakdown = ({ breakdown }) => {
@@ -16,28 +17,28 @@ export const AccuracyBreakdown = ({ breakdown }) => {
   const items = [
     {
       label: 'Plenos',
-      icon: '🎯',
+      icon: <Target size={20} />,
       count: exactScores,
       color: 'var(--color-success)',
       description: 'Lo clavaste: resultado exacto (ej: 3-1 y salió 3-1)',
     },
     {
       label: 'Solo el Ganador',
-      icon: '✅',
+      icon: <CheckCircle size={20} />,
       count: winnerHits,
       color: 'var(--color-warning)',
       description: 'Acertaste quién ganó, pero no el marcador exacto',
     },
     {
       label: 'Bonus Goles',
-      icon: '⚽',
+      icon: <CircleDot size={20} />,
       count: bonusGoals,
       color: 'var(--color-info)',
       description: 'Acertaste cuántos goles hubo en total (>2 goles)',
     },
     {
       label: 'Pifiaste',
-      icon: '💥',
+      icon: <Zap size={20} />,
       count: errors,
       color: 'var(--color-error)',
       description: 'No sumaste puntos en este partido',

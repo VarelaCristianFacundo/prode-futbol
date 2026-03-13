@@ -1,21 +1,21 @@
 export const ROUND_STATUS_CONFIG = {
   pending: {
-    icon: '⏳',
+    icon: null,
     label: 'Pendiente',
     color: '#9ca3af',
   },
   open: {
-    icon: '🟢',
+    icon: null,
     label: 'En curso',
     color: '#10b981',
   },
   locked: {
-    icon: '⚽',
+    icon: null,
     label: 'En juego',
     color: '#ef4444',
   },
   finished: {
-    icon: '✅',
+    icon: null,
     label: 'Finalizada',
     color: '#3b82f6',
   },

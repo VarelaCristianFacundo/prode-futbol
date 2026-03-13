@@ -1,3 +1,4 @@
+import { FileText, Star, CheckCircle } from 'lucide-react'
 import styles from './AdditionalStats.module.css'
 
 export const AdditionalStats = ({ stats }) => {
@@ -5,17 +6,17 @@ export const AdditionalStats = ({ stats }) => {
     {
       label: 'Total de Pronósticos Cargados',
       value: stats.totalPredictions,
-      icon: '📝',
+      icon: <FileText size={20} />,
     },
     {
       label: 'Promedio de Puntos por Partido',
       value: stats.avgPointsPerMatch.toFixed(2),
-      icon: '⭐',
+      icon: <Star size={20} />,
     },
     {
       label: 'Partidos Finalizados',
       value: stats.finishedMatches,
-      icon: '✅',
+      icon: <CheckCircle size={20} />,
     },
   ]
 

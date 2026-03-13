@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Calendar, User, CircleDot } from 'lucide-react'
 import MatchSelector from '../MatchSelector'
 import SelectDropdown from '../../Common/SelectDropdown'
 
@@ -58,7 +59,7 @@ const RoundUserSelectors = ({
   const allOtherRounds = availableRounds.slice(0, availableRounds.length - 3).reverse()
 
   const getRoundLabel = round => {
-    return `Fecha ${round.round_number} ${round.status === 'finished' ? '🏁' : '⚽'}`
+    return `Fecha ${round.round_number} ${round.status === 'finished' ? '(fin)' : ''}`
   }
 
   return (
@@ -76,8 +77,8 @@ const RoundUserSelectors = ({
               marginBottom: '6px',
             }}
           >
-            <label className="form-label" style={{ margin: 0 }}>
-              📅 Seleccioná una Fecha
+            <label className="form-label" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Calendar size={15} /> Seleccioná una Fecha
             </label>
             {availableRounds.length > 3 && (
               <div style={{ position: 'relative' }}>
@@ -202,7 +203,7 @@ const RoundUserSelectors = ({
 
         {viewMode === 'by-user' ? (
           <div>
-            <label className="form-label">👤 Seleccionar Usuario</label>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><User size={15} /> Seleccionar Usuario</label>
             <SelectDropdown
               items={users}
               selectedId={selectedUser}
@@ -223,7 +224,7 @@ const RoundUserSelectors = ({
           </div>
         ) : (
           <div>
-            <label className="form-label">⚽ Seleccionar Partido</label>
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CircleDot size={15} /> Seleccionar Partido</label>
             <MatchSelector
               matches={matches}
               selectedMatchId={selectedMatchId}

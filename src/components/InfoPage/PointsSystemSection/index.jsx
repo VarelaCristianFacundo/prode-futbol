@@ -1,3 +1,4 @@
+import { BarChart2 } from 'lucide-react'
 import Card from '../Card'
 import SectionHeader from '../SectionHeader'
 import PointsSystemItem from './PointSystemItem'
@@ -6,7 +7,7 @@ import { pointsSystemData } from '../info.config'
 export default function PointsSystemSection() {
   return (
     <Card backgroundColor="rgba(30, 127, 67, 0.05)" borderColor="var(--color-primary)">
-      <SectionHeader icon="📊" title="Sistema de Puntos" color="var(--color-primary)" />
+      <SectionHeader icon={<BarChart2 size={18} />} title="Sistema de Puntos" color="var(--color-primary)" />
       <div
         style={{
           display: 'flex',

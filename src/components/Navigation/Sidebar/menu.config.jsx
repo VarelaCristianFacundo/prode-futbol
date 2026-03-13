@@ -1,10 +1,12 @@
+import { Trophy, Info, TrendingUp, Settings, Target, Scale, Star, ClipboardList } from 'lucide-react'
+
 // Configuración del menú hamburguesa - Navegación global
 
 export const MENU_ITEMS = [
   {
     id: 'tournament',
     label: 'Torneo Local',
-    icon: '🏆',
+    icon: <Trophy size={20} />,
     description: 'Pronósticos, rivales y tabla',
     adminOnly: false,
     viewType: 'tournament',
@@ -12,7 +14,7 @@ export const MENU_ITEMS = [
   {
     id: 'info',
     label: 'Información del Torneo',
-    icon: 'ℹ️',
+    icon: <Info size={20} />,
     description: 'Reglas, puntos y desempates',
     adminOnly: false,
     viewType: 'info',
@@ -20,7 +22,7 @@ export const MENU_ITEMS = [
   {
     id: 'stats',
     label: 'Estadísticas',
-    icon: '📈',
+    icon: <TrendingUp size={20} />,
     description: 'Ver estadísticas personales y generales',
     adminOnly: false,
     viewType: 'stats',
@@ -34,7 +36,7 @@ export const MENU_ITEMS = [
   {
     id: 'admin',
     label: 'Administración',
-    icon: '⚙️',
+    icon: <Settings size={20} />,
     description: 'Gestionar partidos y fechas',
     adminOnly: true,
     viewType: 'admin',
@@ -53,21 +55,21 @@ export const INFO_SECTIONS = [
   {
     id: 'points',
     label: 'Sistema de Puntos',
-    icon: '🎯',
+    icon: <Target size={20} />,
   },
   {
     id: 'tiebreaks',
     label: 'Desempates',
-    icon: '⚖️',
+    icon: <Scale size={20} />,
   },
   {
     id: 'special-rules',
     label: 'Reglas Especiales',
-    icon: '⭐',
+    icon: <Star size={20} />,
   },
   {
     id: 'match-status',
     label: 'Estado de Partidos',
-    icon: '📋',
+    icon: <ClipboardList size={20} />,
   },
 ]

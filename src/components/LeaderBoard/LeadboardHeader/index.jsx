@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Trophy, Calendar, Medal } from 'lucide-react'
 import SelectDropdown from '../../Common/SelectDropdown'
 
 const LeaderboardHeader = memo(function LeaderboardHeader({
@@ -6,6 +7,8 @@ const LeaderboardHeader = memo(function LeaderboardHeader({
   setSelectedRound,
   rounds,
   roundsLoading,
+  view,
+  setView,
 }) {
   return (
     <div style={{ marginBottom: '16px' }}>
@@ -21,11 +24,67 @@ const LeaderboardHeader = memo(function LeaderboardHeader({
           fontSize: '1.5rem',
         }}
       >
-        <span>🏆</span>
+        <Trophy size={22} />
         <span>Tabla de Posiciones</span>
       </h2>
 
-      {rounds && rounds.length > 0 && (
+      {/* Toggle between general and winners views */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '8px',
+          marginBottom: '12px',
+          background: 'var(--color-surface-variant)',
+          borderRadius: '10px',
+          padding: '4px',
+        }}
+      >
+        <button
+          onClick={() => setView('general')}
+          style={{
+            flex: 1,
+            padding: '8px 12px',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '0.9rem',
+            background: view === 'general' ? 'var(--color-primary)' : 'transparent',
+            color: view === 'general' ? 'white' : 'var(--color-text-secondary)',
+            transition: 'all 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+          }}
+        >
+          <Trophy size={15} /> General
+        </button>
+        <button
+          onClick={() => setView('winners')}
+          style={{
+            flex: 1,
+            padding: '8px 12px',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '0.9rem',
+            background: view === 'winners' ? 'var(--color-primary)' : 'transparent',
+            color: view === 'winners' ? 'white' : 'var(--color-text-secondary)',
+            transition: 'all 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+          }}
+        >
+          🥇 Ganadores por Fecha
+        </button>
+      </div>
+
+      {/* Round filter — only shown in general view */}
+      {view === 'general' && rounds && rounds.length > 0 && (
         <SelectDropdown
           items={[
             { id: null, round_number: null, name: '🏆 General' },
@@ -42,13 +101,13 @@ const LeaderboardHeader = memo(function LeaderboardHeader({
           isLoading={roundsLoading}
           placeholder="Seleccionar fecha..."
           renderButton={round => (
-            <span style={{ fontWeight: '600' }}>
-              {round.round_number === null ? '🏆 General' : `📅 Fecha ${round.round_number}`}
+            <span style={{ fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {round.round_number === null ? <><Trophy size={14} /> General</> : <><Calendar size={14} /> Fecha {round.round_number}</>}
             </span>
           )}
           renderOption={round => (
-            <span style={{ flex: 1, fontWeight: '600' }}>
-              {round.round_number === null ? '🏆 General' : `📅 Fecha ${round.round_number}`}
+            <span style={{ flex: 1, fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {round.round_number === null ? <><Trophy size={14} /> General</> : <><Calendar size={14} /> Fecha {round.round_number}</>}
             </span>
           )}
         />

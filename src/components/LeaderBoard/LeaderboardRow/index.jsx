@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Eye } from 'lucide-react'
 import { POSITION_CONFIG } from '../leaderboard.config'
 import InfoButton from '../../Common/InfoButton'
 
@@ -188,7 +189,7 @@ const ViewCell = memo(function ViewCell({ player, selectedRound, onViewPredictio
         }}
         aria-label={`Ver pronosticos de ${player.username} en fecha ${selectedRound}`}
       >
-        <span aria-hidden="true">👀</span>
+        <Eye size={16} aria-hidden="true" />
       </button>
     </td>
   )

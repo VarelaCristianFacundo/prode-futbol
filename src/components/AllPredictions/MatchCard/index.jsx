@@ -1,3 +1,4 @@
+import { CheckCircle, XCircle } from 'lucide-react'
 import TeamDisplay from '../../Common/TeamDisplay'
 import MatchStatusBadge from '../MatchStatusBadge'
 
@@ -88,7 +89,9 @@ const MatchCard = ({ match, prediction, started }) => {
                       color: prediction.points > 0 ? '#10b981' : '#ef4444',
                     }}
                   >
-                    {prediction.points > 0 ? '✅' : '❌'} {prediction.points} pts
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', verticalAlign: 'middle' }}>
+                      {prediction.points > 0 ? <CheckCircle size={14} /> : <XCircle size={14} />} {prediction.points} pts
+                    </span>
                   </div>
                 </div>
               )}

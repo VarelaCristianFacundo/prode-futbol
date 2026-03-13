@@ -1,3 +1,4 @@
+import { CircleDot, MapPin } from 'lucide-react'
 import Card from '../Card'
 import SectionHeader from '../SectionHeader'
 import TiebreakItem from './TiebreakItem'
@@ -8,7 +9,7 @@ export default function TiebreakSection() {
   return (
     <Card backgroundColor="rgba(59, 130, 246, 0.05)" borderColor="var(--color-info)">
       <SectionHeader
-        icon="⚽"
+        icon={<CircleDot size={18} />}
         title="REGLAMENTO DE DESEMPATE Y PREMIOS"
         color="var(--color-info)"
         centered
@@ -27,7 +28,7 @@ export default function TiebreakSection() {
             gap: '8px',
           }}
         >
-          <span>📌</span>
+          <MapPin size={16} />
           <span>Criterio de desempate</span>
         </h4>
         <div

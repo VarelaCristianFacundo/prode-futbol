@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { CheckCircle, XCircle, AlertTriangle, Info } from 'lucide-react'
 
 export default function Toast({ message, type = 'success', onClose, duration = 30000 }) {
   useEffect(() => {
@@ -52,10 +53,10 @@ export default function Toast({ message, type = 'success', onClose, duration = 3
 
   const getIcon = () => {
     const icons = {
-      success: '✅',
-      error: '❌',
-      warning: '⚠️',
-      info: 'ℹ️',
+      success: <CheckCircle size={22} />,
+      error: <XCircle size={22} />,
+      warning: <AlertTriangle size={22} />,
+      info: <Info size={22} />,
     }
     return icons[type] || icons.info
   }
@@ -63,7 +64,7 @@ export default function Toast({ message, type = 'success', onClose, duration = 3
   return (
     <>
       <div style={getStyles()}>
-        <span style={{ fontSize: '1.5rem' }}>{getIcon()}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center' }}>{getIcon()}</span>
         <span style={{ flex: 1 }}>{message}</span>
         <button
           onClick={onClose}

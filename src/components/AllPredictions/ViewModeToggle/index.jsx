@@ -1,3 +1,4 @@
+import { User, CircleDot } from 'lucide-react'
 import styles from './ViewModeToggle.module.css'
 
 const ViewModeToggle = ({ viewMode, onChange }) => {
@@ -9,8 +10,8 @@ const ViewModeToggle = ({ viewMode, onChange }) => {
           checked={viewMode === 'by-match'}
           onChange={e => onChange(e.target.checked ? 'by-match' : 'by-user')}
         />
-        <span>👤 Por usuario</span>
-        <span>⚽ Por partido</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><User size={14} /> Por usuario</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><CircleDot size={14} /> Por partido</span>
       </label>
     </div>
   )

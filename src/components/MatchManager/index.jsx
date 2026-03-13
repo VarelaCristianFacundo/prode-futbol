@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
+import { CircleDot, Calendar, Loader2, Save } from 'lucide-react'
 import { useRounds } from '../../hooks/useRounds'
 import { useMatches } from '../../hooks/useMatches'
 import MatchResult from './MatchResult'
@@ -154,7 +155,7 @@ export default function MatchManager() {
           </div>
         ) : !matches || matches.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '48px 16px' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚽</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', color: 'var(--color-text-secondary)' }}><CircleDot size={48} /></div>
             <h3 style={{ color: 'var(--color-text-primary)', marginBottom: '8px' }}>
               No hay partidos en esta fecha
             </h3>
@@ -196,7 +197,7 @@ export default function MatchManager() {
                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
                 }}
               >
-                <span style={{ fontSize: '1.5rem' }}>{saving ? '⏳' : '💾'}</span>
+                <span style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center' }}>{saving ? <Loader2 size={24} style={{ animation: 'spin 0.8s linear infinite' }} /> : <Save size={24} />}</span>
                 <span>{saving ? 'Guardando...' : 'Guardar Todos los Resultados'}</span>
               </button>
             </div>
@@ -204,7 +205,7 @@ export default function MatchManager() {
         )
       ) : (
         <div style={{ textAlign: 'center', padding: '48px 16px' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📅</div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', color: 'var(--color-text-secondary)' }}><Calendar size={48} /></div>
           <h3 style={{ color: 'var(--color-text-primary)', marginBottom: '8px' }}>
             Seleccioná una fecha
           </h3>

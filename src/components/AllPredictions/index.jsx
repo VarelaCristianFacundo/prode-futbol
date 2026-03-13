@@ -1,4 +1,5 @@
 import { useAllPredictions } from '../../hooks/useAllPredictions'
+import { Lock, Users, CircleDot } from 'lucide-react'
 import ViewModeToggle from './ViewModeToggle'
 import RoundUserSelectors from './RoundUserSelectors'
 import MatchPredictionsByUser from './MatchPredictionsByUser'
@@ -67,15 +68,19 @@ export default function AllPredictions({ initialRound = null, initialUser = '' }
             fontWeight: '700',
             color: 'var(--color-primary)',
             marginBottom: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
           }}
         >
-          👥 Espia como vienen los rivales
+          <Users size={18} /> Espia como vienen los rivales
         </h2>
       </div>
 
       {availableRounds.length === 0 && (
         <EmptyState
-          icon="🔒"
+          icon={<Lock size={48} />}
           title="Todavía no hay fechas para ver"
           description="Los pronósticos de otros usuarios se podrán ver cuando las fechas estén bloqueadas o finalizadas. Por ahora, todas las fechas están abiertas o pendientes."
         />
@@ -124,7 +129,7 @@ export default function AllPredictions({ initialRound = null, initialUser = '' }
         matches.length === 0 &&
         !isRoundOpen && (
           <EmptyState
-            icon="⚽"
+            icon={<CircleDot size={48} />}
             title="No hay partidos cargados"
             description="Esta fecha todavía no tiene partidos configurados"
           />
@@ -136,7 +141,7 @@ export default function AllPredictions({ initialRound = null, initialUser = '' }
           (viewMode === 'by-match' && selectedMatchId)) &&
         isRoundOpen && (
           <EmptyState
-            icon="🔒"
+            icon={<Lock size={48} />}
             title="Fecha abierta"
             description="Los pronósticos se pueden ver una vez que la fecha esté cerrada"
           />
@@ -144,7 +149,7 @@ export default function AllPredictions({ initialRound = null, initialUser = '' }
 
       {availableRounds.length > 0 && noSelection && (
         <EmptyState
-          icon="👥"
+          icon={<Users size={48} />}
           title={
             viewMode === 'by-match'
               ? 'Seleccioná una fecha y un partido'

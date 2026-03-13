@@ -47,7 +47,7 @@ export default function Sidebar({ onNavigate, onSignOut }) {
       <TournamentDrawer
         isOpen={isOpen}
         onClose={handleClose}
-        title="⚽ Menú"
+        title="Menú"
         showBackButton={false}
       >
         <MainMenuView

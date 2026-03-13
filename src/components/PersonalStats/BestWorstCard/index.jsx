@@ -1,8 +1,9 @@
+import { Trophy, Frown } from 'lucide-react'
 import styles from './BestWorstCard.module.css'
 
 export const BestWorstCard = ({ type = 'best', roundNumber, points }) => {
   const isBest = type === 'best'
-  const icon = isBest ? '🏆' : '😢'
+  const icon = isBest ? <Trophy size={28} /> : <Frown size={28} />
   const label = isBest ? 'Mejor Fecha' : 'Peor Fecha'
   return (
     <div className={`${styles.card} ${styles[type]}`}>

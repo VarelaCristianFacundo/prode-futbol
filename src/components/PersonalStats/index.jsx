@@ -1,3 +1,4 @@
+import { Target, CheckCircle, BarChart2 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { usePersonalStats } from '../../hooks/usePersonalStats'
 import { MetricCard } from './MetricCard'
@@ -43,15 +44,15 @@ export default function PersonalStats() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Resumen de Desempeño</h2>
         <div className={styles.metricsGrid}>
-          <MetricCard icon="🎯" label="Total de Puntos" value={stats.metrics.totalPoints} />
+          <MetricCard icon={<Target size={24} />} label="Total de Puntos" value={stats.metrics.totalPoints} />
           <MetricCard
-            icon="✅"
+            icon={<CheckCircle size={24} />}
             label="Porcentaje de Aciertos"
             value={stats.metrics.hitPercentage}
             unit="%"
           />
           <MetricCard
-            icon="📊"
+            icon={<BarChart2 size={24} />}
             label="Promedio por Fecha"
             value={stats.metrics.avgPerRound.toFixed(1)}
           />

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Calendar, CheckCircle, Flag, CircleDot, Clock, Save, Lightbulb, Loader2 } from 'lucide-react'
 import { useMatches } from '../../hooks/useMatches'
 import { usePredictions } from '../../hooks/usePredictions'
 import { useRounds } from '../../hooks/useRounds'
@@ -100,37 +101,46 @@ export default function PredictionForm() {
     if (isRoundPending) {
       return {
         color: '#6366f1',
-        text: 'Pendiente 📅',
+        text: 'Pendiente',
+        Icon: Clock,
         description: 'Podés adelantar tus pronósticos para esta fecha',
       }
     }
     if (isRoundOpen) {
       return {
         color: '#10b981',
-        text: 'Abierta ✅',
+        text: 'Abierta',
+        Icon: CheckCircle,
         description: 'Cargá tus pronósticos y guardalos todos al final',
       }
     }
     if (isRoundFinished) {
       return {
         color: '#3b82f6',
-        text: 'Finalizada 🏁',
+        text: 'Finalizada',
+        Icon: Flag,
         description: 'Mirá tus resultados y puntos obtenidos',
       }
     }
     return {
       color: '#ef4444',
-      text: 'En juego ⚽',
+      text: 'En juego',
+      Icon: CircleDot,
       description: 'Esta fecha está en juego. No se pueden modificar pronósticos.',
     }
   }, [isRoundOpen, isRoundPending, isRoundFinished])
 
-  // Auto-seleccionar siempre la ultima fecha disponible al cargar
+  // Auto-seleccionar la fecha abierta al cargar; si no hay ninguna, la última disponible
   useEffect(() => {
     if (selectedRound) return
 
     if (rounds?.length) {
-      const available = rounds.filter(r => ['pending', 'open', 'locked', 'finished'].includes(r.status))
+      const openRound = rounds.find(r => r.status === 'open')
+      if (openRound) {
+        setSelectedRound(openRound.round_number)
+        return
+      }
+      const available = rounds.filter(r => ['pending', 'locked', 'finished'].includes(r.status))
       const lastAvailable = available.sort((a, b) => b.round_number - a.round_number)[0]
       if (lastAvailable) {
         setSelectedRound(lastAvailable.round_number)
@@ -390,8 +400,12 @@ export default function PredictionForm() {
               fontWeight: '700',
               textTransform: 'uppercase',
               letterSpacing: '0.5px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
           >
+            {statusBadge.Icon && <statusBadge.Icon size={14} />}
             {statusBadge.text}
           </span>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', margin: 0 }}>
@@ -412,8 +426,8 @@ export default function PredictionForm() {
             textAlign: 'center',
           }}
         >
-          <p style={{ color: 'var(--color-success)', fontWeight: '600', marginBottom: '8px' }}>
-            💡 La Fecha {activeRound.round_number} está abierta para pronósticos
+          <p style={{ color: 'var(--color-success)', fontWeight: '600', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <Lightbulb size={16} /> La Fecha {activeRound.round_number} está abierta para pronósticos
           </p>
           <button
             onClick={() => setSelectedRound(activeRound.round_number)}

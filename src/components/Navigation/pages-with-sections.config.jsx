@@ -1,25 +1,27 @@
+import { BarChart2, Eye, Trophy, Target, Scale, ClipboardList, TrendingUp, CircleDot, Calendar } from 'lucide-react'
+
 /**
  * Configuración de páginas que tienen secciones internas
  * Esto permite mostrar las secciones en NavTabs de forma dinámica y escalable
  */
 
 export const TOURNAMENT_SECTIONS = [
-  { id: 'predictions', label: 'Mis Pronósticos', mobileLabel: 'Pronósticos', icon: '📊' },
-  { id: 'all-predictions', label: 'Ver Pronósticos', mobileLabel: 'Rivales', icon: '👀' },
-  { id: 'leaderboard', label: 'Tabla de Posiciones', mobileLabel: 'Tabla', icon: '🏆' },
+  { id: 'predictions', label: 'Mis Pronósticos', mobileLabel: 'Pronósticos', icon: <BarChart2 size={18} /> },
+  { id: 'all-predictions', label: 'Ver Pronósticos', mobileLabel: 'Rivales', icon: <Eye size={18} /> },
+  { id: 'leaderboard', label: 'Tabla de Posiciones', mobileLabel: 'Tabla', icon: <Trophy size={18} /> },
 ]
 
 export const INFO_SECTIONS = [
-  { id: 'points', label: 'Sistema de Puntos', icon: '🎯' },
-  { id: 'tiebreaks', label: 'Desempates', icon: '⚖️' },
-  { id: 'match-status', label: 'Estado de Partidos', icon: '📋' },
+  { id: 'points', label: 'Sistema de Puntos', icon: <Target size={18} /> },
+  { id: 'tiebreaks', label: 'Desempates', icon: <Scale size={18} /> },
+  { id: 'match-status', label: 'Estado de Partidos', icon: <ClipboardList size={18} /> },
 ]
 
-export const STATS_SECTIONS = [{ id: 'personal', label: 'Estadísticas Personales', icon: '📈' }]
+export const STATS_SECTIONS = [{ id: 'personal', label: 'Estadísticas Personales', icon: <TrendingUp size={18} /> }]
 
 export const ADMIN_SECTIONS = [
-  { id: 'admin-matches', label: 'Gestionar Partidos', mobileLabel: 'Partidos', icon: '⚽' },
-  { id: 'admin-rounds', label: 'Gestionar Fechas', mobileLabel: 'Fechas', icon: '📅' },
+  { id: 'admin-matches', label: 'Gestionar Partidos', mobileLabel: 'Partidos', icon: <CircleDot size={18} /> },
+  { id: 'admin-rounds', label: 'Gestionar Fechas', mobileLabel: 'Fechas', icon: <Calendar size={18} /> },
 ]
 
 /**

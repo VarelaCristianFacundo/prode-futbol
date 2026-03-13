@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Banknote } from 'lucide-react'
 import styles from './PaymentReminderModal.module.css'
 
 /**
@@ -53,7 +54,7 @@ const PaymentReminderModal = ({ isOpen, onClose, roundNumber }) => {
       <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         {/* Header */}
         <div className={styles.header}>
-          <span className={styles.icon}>💰</span>
+          <Banknote className={styles.icon} size={32} />
           <h2 id="modal-title" className={styles.title}>
             ¡No te olvides de abonar la fecha!
           </h2>

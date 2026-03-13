@@ -4,7 +4,7 @@ import styles from './TournamentDrawer.module.css'
 export default function TournamentDrawer({
   isOpen,
   onClose,
-  title = '⚽ Menú',
+  title = 'Menú',
   showBackButton = false,
   onBack,
   children,

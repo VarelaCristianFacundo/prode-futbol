@@ -1,3 +1,4 @@
+import { MapPin, AlertTriangle } from 'lucide-react'
 import Card from '../Card'
 import SectionHeader from '../SectionHeader'
 import styles from './MatchStatusSection.module.css'
@@ -6,7 +7,7 @@ export default function MatchStatusSection() {
   return (
     <Card backgroundColor="rgba(249, 168, 37, 0.05)" borderColor="var(--color-warning)">
       <SectionHeader
-        icon="📌"
+        icon={<MapPin size={18} />}
         title="Partidos Aplazados o Suspendidos"
         color="var(--color-warning)"
       />
@@ -18,7 +19,7 @@ export default function MatchStatusSection() {
 
       <div className={styles.importantRule}>
         <div className={styles.ruleHeader}>
-          <span className={styles.ruleIcon}>⚠️</span>
+          <AlertTriangle className={styles.ruleIcon} size={20} />
           <h4 className={styles.ruleTitle}>Regla Importante</h4>
         </div>
         <p className={styles.ruleText}>

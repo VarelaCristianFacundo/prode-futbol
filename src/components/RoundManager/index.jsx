@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Calendar, CircleCheck, Lock, CheckCircle, Clock, Users, RefreshCw, AlertTriangle, XCircle } from 'lucide-react'
 import { useRounds } from '../../hooks/useRounds'
 import { supabase } from '../../lib/supabase'
 import Toast from '../Common/Toast'
@@ -6,6 +7,7 @@ import Toast from '../Common/Toast'
 export default function RoundManager() {
   const { rounds, activeRound, updateRoundStatus, finishRound, loading } = useRounds()
   const [matchesByRound, setMatchesByRound] = useState({})
+  const [syncLoading, setSyncLoading] = useState(false)
   // const [roundNumber, setRoundNumber] = useState(1)
   // const [adminLoading, setAdminLoading] = useState(false)
   const [toast, setToast] = useState(null)
@@ -20,12 +22,13 @@ export default function RoundManager() {
       try {
         const { data: matches, error } = await supabase
           .from('matches')
-          .select('id, round_number, is_finished')
+          .select('id, round_number, is_finished, home_score, away_score')
           .order('round_number', { ascending: true })
 
         if (error) throw error
 
         // Organizar partidos por fecha
+        // Un partido cuenta como finalizado si is_finished=true O si tiene resultado (home_score y away_score seteados)
         const matchesMap = {}
         matches?.forEach(match => {
           if (!matchesMap[match.round_number]) {
@@ -35,7 +38,7 @@ export default function RoundManager() {
             }
           }
           matchesMap[match.round_number].total += 1
-          if (match.is_finished) {
+          if (match.is_finished || (match.home_score !== null && match.away_score !== null)) {
             matchesMap[match.round_number].finished += 1
           }
         })
@@ -91,28 +94,28 @@ export default function RoundManager() {
         bg: 'rgba(156, 163, 175, 0.1)',
         border: 'var(--color-text-secondary)',
         color: 'var(--color-text-secondary)',
-        icon: '⏳',
+        icon: <Clock size={14} />,
         label: 'Pendiente',
       },
       open: {
         bg: 'rgba(16, 185, 129, 0.1)',
         border: '#10b981',
         color: '#047857',
-        icon: '🟢',
+        icon: <CircleCheck size={14} />,
         label: 'Abierta',
       },
       locked: {
         bg: 'rgba(239, 68, 68, 0.1)',
         border: 'var(--color-error)',
         color: 'var(--color-error)',
-        icon: '🔒',
+        icon: <Lock size={14} />,
         label: 'Bloqueada',
       },
       finished: {
         bg: 'rgba(59, 130, 246, 0.1)',
         border: 'var(--color-info)',
         color: 'var(--color-info)',
-        icon: '✅',
+        icon: <CheckCircle size={14} />,
         label: 'Finalizada',
       },
     }
@@ -284,6 +287,90 @@ export default function RoundManager() {
     [rounds, updateRoundStatus]
   )
 
+  const handleSyncStatuses = useCallback(async () => {
+    if (!rounds.length || Object.keys(matchesByRound).length === 0) {
+      setToast({ message: 'Cargando datos de partidos, intentá de nuevo', type: 'warning' })
+      return
+    }
+
+    setSyncLoading(true)
+    try {
+      // Paso 1: corregir is_finished en partidos que tienen resultado pero el flag no está activado
+      const { error: matchFixError } = await supabase
+        .from('matches')
+        .update({ is_finished: true })
+        .not('home_score', 'is', null)
+        .not('away_score', 'is', null)
+        .eq('is_finished', false)
+      if (matchFixError) throw matchFixError
+
+      // Paso 2: refrescar matchesByRound con datos actualizados
+      const { data: freshMatches, error: fetchError } = await supabase
+        .from('matches')
+        .select('round_number, is_finished, home_score, away_score')
+      if (fetchError) throw fetchError
+
+      const freshMap = {}
+      freshMatches?.forEach(m => {
+        if (!freshMap[m.round_number]) freshMap[m.round_number] = { total: 0, finished: 0 }
+        freshMap[m.round_number].total += 1
+        if (m.is_finished || (m.home_score !== null && m.away_score !== null)) {
+          freshMap[m.round_number].finished += 1
+        }
+      })
+
+      // Paso 3: calcular nuevo estado de cada fecha
+      // Orden de mayor a menor: la fecha "abierta" es la más reciente con partidos en curso
+      const sorted = [...rounds].sort((a, b) => b.round_number - a.round_number)
+      let openAssigned = false
+      const updates = []
+
+      for (const r of sorted) {
+        if (r.status === 'finished') continue // no tocar finalizadas
+        const mInfo = freshMap[r.round_number] || { total: 0, finished: 0 }
+
+        let newStatus
+        if (mInfo.total > 0 && mInfo.finished === mInfo.total) {
+          newStatus = 'finished'
+        } else if (mInfo.finished > 0 && !openAssigned) {
+          // La fecha más reciente con algún partido jugado (pero no todos) = abierta
+          newStatus = 'open'
+          openAssigned = true
+        } else if (mInfo.finished > 0 && openAssigned) {
+          newStatus = 'locked'
+        } else {
+          newStatus = 'pending'
+        }
+
+        if (newStatus !== r.status) {
+          updates.push({ roundNumber: r.round_number, newStatus })
+        }
+      }
+
+      if (updates.length === 0) {
+        setToast({ message: 'Los estados ya están actualizados', type: 'success' })
+        return
+      }
+
+      let hasError = false
+      for (const { roundNumber, newStatus } of updates) {
+        const { error } = await updateRoundStatus(roundNumber, newStatus)
+        if (error) { hasError = true; break }
+      }
+
+      setToast({
+        message: hasError
+          ? 'Error al sincronizar algunos estados'
+          : `${updates.length} fecha(s) actualizadas correctamente`,
+        type: hasError ? 'error' : 'success',
+      })
+    } catch (err) {
+      setToast({ message: `Error: ${err.message}`, type: 'error' })
+    } finally {
+      setSyncLoading(false)
+    }
+  }, [rounds, matchesByRound, updateRoundStatus])
+
   if (loading) {
     return (
       <div
@@ -331,7 +418,7 @@ export default function RoundManager() {
             flexWrap: 'wrap',
           }}
         >
-          <span style={{ fontSize: '2rem' }}>📅</span>
+          <Calendar size={28} />
           <span>Gestión de Fechas</span>
         </h2>
         <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>
@@ -380,7 +467,7 @@ export default function RoundManager() {
                 border: '1px solid rgba(16, 185, 129, 0.2)',
               }}
             >
-              <span style={{ fontSize: '1.1rem' }}>🟢</span>
+              <CircleCheck size={18} style={{ color: '#047857' }} />
               <span
                 style={{
                   fontSize: '0.85rem',
@@ -412,11 +499,11 @@ export default function RoundManager() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '2rem',
                   border: '2px solid rgba(16, 185, 129, 0.2)',
+                  color: '#10b981',
                 }}
               >
-                📅
+                <Calendar size={32} />
               </div>
               <div>
                 <p
@@ -490,7 +577,7 @@ export default function RoundManager() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '1.8rem' }}>👥</span>
+                    <Users size={28} />
                     <div>
                       <h4
                         style={{
@@ -663,7 +750,7 @@ export default function RoundManager() {
                                 }}
                               >
                                 <span style={{ fontSize: '1.1rem' }}>
-                                  {user.progress === 100 ? '✅' : user.progress > 0 ? '⚠️' : '❌'}
+                                  {user.progress === 100 ? <CheckCircle size={16} color="#10b981" /> : user.progress > 0 ? <AlertTriangle size={16} color="#f59e0b" /> : <XCircle size={16} color="#ef4444" />}
                                 </span>
                                 <span
                                   style={{
@@ -760,7 +847,33 @@ export default function RoundManager() {
       )}
 
       {/* Rounds List */}
-      <div className="card" style={{ padding: '0' }}>
+      <div className="card" style={{ padding: '16px 16px 0' }}>
+        {/* Sync button */}
+        <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+          <button
+            onClick={handleSyncStatuses}
+            disabled={syncLoading}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              borderRadius: '8px',
+              border: '2px solid var(--color-primary)',
+              background: 'transparent',
+              color: 'var(--color-primary)',
+              fontWeight: '600',
+              fontSize: '0.85rem',
+              cursor: syncLoading ? 'not-allowed' : 'pointer',
+              opacity: syncLoading ? 0.6 : 1,
+              transition: 'all 0.2s',
+            }}
+            title="Actualiza automáticamente el estado de cada fecha según los partidos finalizados"
+          >
+            <RefreshCw size={14} style={syncLoading ? { animation: 'spin 1s linear infinite' } : {}} />
+            {syncLoading ? 'Sincronizando...' : 'Sincronizar estados'}
+          </button>
+        </div>
         <div style={{ padding: '0' }}>
           <div
             style={{
@@ -851,10 +964,10 @@ export default function RoundManager() {
                       e.currentTarget.style.borderColor = 'var(--color-border)'
                     }}
                   >
-                    <option value="pending">⏳ Pendiente</option>
-                    <option value="open">🟢 Abierta</option>
-                    <option value="locked">🔒 Bloqueada</option>
-                    <option value="finished">✅ Finalizada</option>
+                    <option value="pending">Pendiente</option>
+                    <option value="open">Abierta</option>
+                    <option value="locked">Bloqueada</option>
+                    <option value="finished">Finalizada</option>
                   </select>
 
                   {/* Botón Finalizar */}
@@ -919,7 +1032,7 @@ export default function RoundManager() {
                             : 'Todos los partidos están finalizados'
                       }
                     >
-                      <span>✅</span>
+                      <CheckCircle size={16} />
                       <span>
                         Finalizar
                         {matchesByRound[round.round_number] &&
