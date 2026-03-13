@@ -22,9 +22,9 @@ export const ROUND_STATUS_CONFIG = {
 }
 
 export const POSITION_CONFIG = {
-  1: { emoji: '🥇', bgColor: 'rgba(249, 168, 37, 0.1)' },
-  2: { emoji: '🥈', bgColor: 'rgba(189, 189, 189, 0.1)' },
-  3: { emoji: '🥉', bgColor: 'rgba(205, 127, 50, 0.1)' },
+  1: { label: '1', bgColor: 'rgba(249, 168, 37, 0.50)' },
+  2: { label: '2', bgColor: 'rgba(189, 189, 189, 0.28)' },
+  3: { label: '3', bgColor: 'rgba(205, 127, 50, 0.30)' },
 }
 
 export const TABLE_COLUMNS = {

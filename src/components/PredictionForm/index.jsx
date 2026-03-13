@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Calendar, CheckCircle, Flag, CircleDot, Clock, Save, Lightbulb, Loader2 } from 'lucide-react'
+import { Calendar, CheckCircle, Flag, CircleDot, Clock, Save, Lightbulb, Loader2, CircleOff } from 'lucide-react'
 import { useMatches } from '../../hooks/useMatches'
 import { usePredictions } from '../../hooks/usePredictions'
 import { useRounds } from '../../hooks/useRounds'
@@ -205,7 +205,7 @@ export default function PredictionForm() {
   if (!rounds || rounds.length === 0) {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '48px 16px' }}>
-        <div style={{ fontSize: '4rem', marginBottom: '16px' }}>⚽</div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}><CircleDot size={48} color="var(--color-primary)" /></div>
         <h3 style={{ color: 'var(--color-text-primary)', marginBottom: '8px' }}>
           No hay fechas disponibles
         </h3>
@@ -282,7 +282,7 @@ export default function PredictionForm() {
       <div className="container" style={{ maxWidth: '900px' }}>
         {/* Selector de fechas */}
         <div className="card" style={{ marginBottom: '24px' }}>
-          <label className="form-label">📅 Seleccioná una Fecha</label>
+          <label className="form-label"><Calendar size={15} style={{ verticalAlign: 'middle', marginRight: '6px' }} />Seleccioná una Fecha</label>
           <SelectDropdown
             items={availableRounds}
             selectedId={selectedRound}
@@ -293,31 +293,31 @@ export default function PredictionForm() {
               <span style={{ fontWeight: '600' }}>
                 Fecha {round.round_number}{' '}
                 {round.status === 'open'
-                  ? '(Abierta ✅)'
+                  ? '(Abierta)'
                   : round.status === 'pending'
-                    ? '(Pendiente 📅)'
+                    ? '(Pendiente)'
                   : round.status === 'finished'
-                    ? '(Finalizada 🏁)'
-                    : '(En juego ⚽)'}
+                    ? '(Finalizada)'
+                    : '(En juego)'}
               </span>
             )}
             renderOption={round => (
               <span style={{ flex: 1, fontWeight: '600' }}>
                 Fecha {round.round_number}{' '}
                 {round.status === 'open'
-                  ? '(Abierta ✅)'
+                  ? '(Abierta)'
                   : round.status === 'pending'
-                    ? '(Pendiente 📅)'
+                    ? '(Pendiente)'
                   : round.status === 'finished'
-                    ? '(Finalizada 🏁)'
-                    : '(En juego ⚽)'}
+                    ? '(Finalizada)'
+                    : '(En juego)'}
               </span>
             )}
           />
         </div>
 
         <div style={{ textAlign: 'center', padding: '48px 16px' }}>
-          <div style={{ fontSize: '4rem', marginBottom: '16px' }}>⚽</div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}><CircleDot size={48} color="var(--color-primary)" /></div>
           <h3 style={{ color: 'var(--color-text-primary)', marginBottom: '8px' }}>
             No hay partidos disponibles
           </h3>
@@ -335,9 +335,9 @@ export default function PredictionForm() {
       <div className="card" style={{ marginBottom: '16px', padding: '0px' }}>
         <label
           className="form-label"
-          style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '12px', display: 'block' }}
+          style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
         >
-          📅 Seleccioná una Fecha
+          <Calendar size={16} /> Seleccioná una Fecha
         </label>
         <SelectDropdown
           items={rounds.filter(r => ['pending', 'open', 'locked', 'finished'].includes(r.status))}
@@ -352,24 +352,24 @@ export default function PredictionForm() {
             <span style={{ fontWeight: '600' }}>
               Fecha {round.round_number}{' '}
               {round.status === 'open'
-                ? '(Abierta ✅)'
+                ? '(Abierta)'
                 : round.status === 'pending'
-                  ? '(Pendiente 📅)'
+                  ? '(Pendiente)'
                 : round.status === 'finished'
-                  ? '(Finalizada 🏁)'
-                  : '(En juego ⚽)'}
+                  ? '(Finalizada)'
+                  : '(En juego)'}
             </span>
           )}
           renderOption={round => (
             <span style={{ flex: 1, fontWeight: '600' }}>
               Fecha {round.round_number}{' '}
               {round.status === 'open'
-                ? '(Abierta ✅)'
+                ? '(Abierta)'
                 : round.status === 'pending'
-                  ? '(Pendiente 📅)'
+                  ? '(Pendiente)'
                 : round.status === 'finished'
-                  ? '(Finalizada 🏁)'
-                  : '(En juego ⚽)'}
+                  ? '(Finalizada)'
+                  : '(En juego)'}
             </span>
           )}
         />
@@ -455,27 +455,39 @@ export default function PredictionForm() {
 
       {/* Botón único para guardar todos - Solo si la fecha está abierta */}
       {isRoundOpen && (
-        <div style={{ marginTop: '24px', position: 'sticky', bottom: '20px', zIndex: 10 }}>
+        <div style={{ position: 'fixed', bottom: '84px', right: '20px', zIndex: 50 }}>
           <button
             onClick={handleSaveAll}
             disabled={saving || !hasValidPredictions}
-            className="btn-primary"
+            title={saving ? 'Guardando...' : 'Guardar pronósticos'}
             style={{
-              width: '100%',
-              padding: '18px',
-              fontSize: '1.1rem',
-              fontWeight: '700',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              opacity: saving || !hasValidPredictions ? 0.6 : 1,
+              gap: '8px',
+              padding: hasValidPredictions ? '14px 20px' : '16px',
+              borderRadius: '999px',
+              border: 'none',
+              background: saving || !hasValidPredictions
+                ? 'var(--color-text-secondary)'
+                : 'var(--color-primary)',
+              color: 'white',
+              fontWeight: '700',
+              fontSize: '0.95rem',
               cursor: saving || !hasValidPredictions ? 'not-allowed' : 'pointer',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+              boxShadow: saving || !hasValidPredictions
+                ? 'none'
+                : '0 6px 24px rgba(16,185,129,0.45)',
+              opacity: saving || !hasValidPredictions ? 0.55 : 1,
+              transition: 'all 0.25s cubic-bezier(0.4,0,0.2,1)',
+              whiteSpace: 'nowrap',
             }}
           >
-            <span style={{ fontSize: '1.5rem' }}>{saving ? '⏳' : '💾'}</span>
-            <span>{saving ? 'Guardando...' : 'Guardar Todos los Pronósticos'}</span>
+            {saving
+              ? <Loader2 size={20} style={{ animation: 'spin 0.8s linear infinite' }} />
+              : <Save size={20} />}
+            {hasValidPredictions && (
+              <span>{saving ? 'Guardando...' : 'Guardar'}</span>
+            )}
           </button>
         </div>
       )}
@@ -491,10 +503,10 @@ export default function PredictionForm() {
             borderRadius: '12px',
           }}
         >
-          <p style={{ color: 'var(--color-text-secondary)', margin: 0 }}>
+          <p style={{ color: 'var(--color-text-secondary)', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
             {isRoundFinished
-              ? '🏁 Esta fecha ya finalizó. Los resultados están calculados.'
-              : '⚽ Esta fecha está en juego. No se pueden modificar pronósticos.'}
+              ? <><Flag size={16} /> Esta fecha ya finalizó. Los resultados están calculados.</>
+              : <><CircleOff size={16} /> Esta fecha está en juego. No se pueden modificar pronósticos.</> }
           </p>
         </div>
       )}

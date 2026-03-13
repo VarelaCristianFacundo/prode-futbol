@@ -45,7 +45,7 @@ export default function Leaderboard({ onViewPredictions }) {
         setView={setView}
       />
 
-      <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
+      <div className="card" style={{ padding: '0', overflow: 'hidden', borderRadius: '12px' }}>
         {view === 'general' ? (
           <LeaderboardTable
             leaderboard={leaderboard}

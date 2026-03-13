@@ -45,12 +45,21 @@ function computeRoundStatuses(matches) {
   const computed = Array.from(grouped.entries())
     .map(([roundNumber, roundMatches]) => {
       const pendingDates = roundMatches
-        .filter(match => !match.is_finished)
+        .filter(match => {
+          // A match is considered finished if is_finished=true OR has scores
+          const hasScores = match.home_score !== null && match.home_score !== undefined &&
+                            match.away_score !== null && match.away_score !== undefined
+          return !match.is_finished && !hasScores
+        })
         .map(match => parseDateParts(match.match_date))
         .filter(Boolean)
         .map(x => x.ts)
 
-      const allFinished = roundMatches.length > 0 && roundMatches.every(match => match.is_finished)
+      const allFinished = roundMatches.length > 0 && roundMatches.every(match => {
+        const hasScores = match.home_score !== null && match.home_score !== undefined &&
+                          match.away_score !== null && match.away_score !== undefined
+        return match.is_finished || hasScores
+      })
       const nextPendingTs = pendingDates.length > 0 ? Math.min(...pendingDates) : null
       const lastPendingTs = pendingDates.length > 0 ? Math.max(...pendingDates) : null
 
@@ -175,6 +184,22 @@ async function run() {
   }
 
   if (updates.length > 0) {
+    // Two-pass update to avoid unique constraint collisions when reordering
+    // match_number within a round (e.g. match 1↔2 swap).
+    // Pass 1: move all affected matches to a temporary high number (50000+id)
+    // that is guaranteed not to conflict with any real match_number.
+    for (const update of updates) {
+      const { error: tmpError } = await supabase
+        .from('matches')
+        .update({ match_number: 50000 + update.id })
+        .eq('id', update.id)
+
+      if (tmpError) {
+        throw new Error(`Unable to set temp match_number for match ${update.id}: ${tmpError.message}`)
+      }
+    }
+
+    // Pass 2: set the final round_number and match_number
     for (const update of updates) {
       const { error: updateError } = await supabase
         .from('matches')
@@ -192,7 +217,7 @@ async function run() {
 
   const { data: refreshedMatches, error: refreshedError } = await supabase
     .from('matches')
-    .select('round_number, match_date, is_finished')
+    .select('round_number, match_date, is_finished, home_score, away_score')
 
   if (refreshedError) {
     throw new Error(`Unable to reload matches: ${refreshedError.message}`)

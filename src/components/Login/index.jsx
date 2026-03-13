@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { CircleDot } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import Toast from '../Common/Toast'
 
@@ -49,7 +48,10 @@ export default function Login() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--color-background)',
+        backgroundImage: 'url(/background.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         padding: '16px',
       }}
     >
@@ -64,7 +66,9 @@ export default function Login() {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px', color: 'var(--color-primary)' }}><CircleDot size={48} /></div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+            <img src="/icono.png" alt="Prode Tsoft" style={{ width: '72px', height: '72px', objectFit: 'contain' }} />
+          </div>
           <h2
             style={{
               fontSize: '1.75rem',

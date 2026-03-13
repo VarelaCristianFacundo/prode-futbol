@@ -8,11 +8,11 @@
   --color-secondary-light: #66bb6a;
 
   /* Fondos */
-  --color-background: #f5f5f5;
-  --color-surface: #ffffff;
-  --color-surface-variant: #fafafa;
-  --color-surface-highlight: #e8f5e9; /* Para cards destacados o secciones activas */
-  --color-admin-badge: #fee2e2; /* Para badges de admin */
+  --color-background: transparent;
+  --color-surface: rgba(255, 255, 255, 0.93);
+  --color-surface-variant: rgba(250, 250, 250, 0.90);
+  --color-surface-highlight: rgba(232, 245, 233, 0.93);
+  --color-admin-badge: rgba(254, 226, 226, 0.95);
 
   /* Textos */
   --color-text-primary: #212121;
@@ -36,7 +36,7 @@
   --color-divider: #e0e0e0;
 
   /* Específicos para prode */
-  --color-match-card: #ffffff;
+  --color-match-card: rgba(255, 255, 255, 0.93);
   --color-match-highlight2: #f1f8f4; /* Para partidos destacados */
   --color-match-highlight: #d4edda; /* Para partidos destacados */
   --color-match-highlight3: #c8e6c9; /* Para partidos destacados */
@@ -73,11 +73,11 @@
   --color-secondary-light: #66bb6a;
 
   /* Fondos - Oscuros */
-  --color-background: #0f0f0f;
-  --color-surface: #1a1a1a;
-  --color-surface-variant: #242424;
-  --color-surface-highlight: #1b3a1f;
-  --color-admin-badge: #3d2626;
+  --color-background: transparent;
+  --color-surface: rgba(26, 26, 26, 0.93);
+  --color-surface-variant: rgba(36, 36, 36, 0.90);
+  --color-surface-highlight: rgba(27, 58, 31, 0.93);
+  --color-admin-badge: rgba(61, 38, 38, 0.95);
 
   /* Textos - Claros */
   --color-text-primary: #e8e8e8;
@@ -101,7 +101,7 @@
   --color-divider: #333333;
 
   /* Específicos para prode - Oscuros */
-  --color-match-card: #1a1a1a;
+  --color-match-card: rgba(26, 26, 26, 0.93);
   --color-match-highlight2: #0d2410;
   --color-match-highlight: #0f3a1a;
   --color-match-highlight3: #134d1a;
@@ -127,7 +127,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--color-background);
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: #0a1a0e;
   color: var(--color-text-primary);
 }
 

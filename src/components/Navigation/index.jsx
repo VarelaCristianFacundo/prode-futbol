@@ -145,16 +145,14 @@ export default function Navigation() {
         }}
       >
         <div className="container">
-          <NavHeader profile={profile} onNavigate={handleNavigationFromMenu} signOut={signOut} />
-
-          {/* Tabs - Responsive - Muestra tabs de navegación o secciones de InfoPage */}
-          {shouldShowTabs && (
-            <NavTabs
-              tabs={tabsToShow}
-              activeTab={currentActiveTab}
-              setActiveTab={handleTabChange}
-            />
-          )}
+          <NavHeader
+            profile={profile}
+            onNavigate={handleNavigationFromMenu}
+            signOut={signOut}
+            tabs={shouldShowTabs ? tabsToShow : []}
+            activeTab={currentActiveTab}
+            setActiveTab={handleTabChange}
+          />
         </div>
       </nav>
 

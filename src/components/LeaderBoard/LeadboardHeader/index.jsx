@@ -79,7 +79,7 @@ const LeaderboardHeader = memo(function LeaderboardHeader({
             gap: '6px',
           }}
         >
-          🥇 Ganadores por Fecha
+          <Medal size={15} /> Ganadores por Fecha
         </button>
       </div>
 
@@ -87,7 +87,7 @@ const LeaderboardHeader = memo(function LeaderboardHeader({
       {view === 'general' && rounds && rounds.length > 0 && (
         <SelectDropdown
           items={[
-            { id: null, round_number: null, name: '🏆 General' },
+            { id: null, round_number: null, name: 'General' },
             ...rounds
               .filter(r => ['open', 'locked', 'finished'].includes(r.status))
               .map(r => ({

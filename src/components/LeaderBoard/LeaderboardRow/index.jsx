@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Eye } from 'lucide-react'
+import { Eye, Trophy } from 'lucide-react'
 import { POSITION_CONFIG } from '../leaderboard.config'
 import InfoButton from '../../Common/InfoButton'
 
@@ -20,17 +20,17 @@ const LeaderboardRow = memo(function LeaderboardRow({
   selectedRound,
 }) {
   const positionConfig = POSITION_CONFIG[position] || {}
-  const { emoji, bgColor } = positionConfig
+  const { bgColor } = positionConfig
 
   return (
     <tr
       style={{
-        backgroundColor: bgColor || 'transparent',
+        backgroundColor: bgColor || 'var(--color-surface)',
         borderBottom: '1px solid var(--color-border)',
         transition: 'background-color 0.2s',
       }}
     >
-      <PositionCell position={position} emoji={emoji} />
+      <PositionCell position={position} />
       <PlayerCell player={player} />
       <PointsCell points={player.total_points} />
       {showRoundsColumn && <RoundsCell rounds={player.rounds_played || 0} />}
@@ -45,7 +45,8 @@ const LeaderboardRow = memo(function LeaderboardRow({
   )
 })
 
-const PositionCell = memo(function PositionCell({ position, emoji }) {
+const PositionCell = memo(function PositionCell({ position }) {
+  const trophyColor = position === 1 ? '#f9a825' : position === 2 ? '#9e9e9e' : position === 3 ? '#cd7f32' : null
   return (
     <td
       style={{
@@ -60,7 +61,7 @@ const PositionCell = memo(function PositionCell({ position, emoji }) {
           gap: '6px',
         }}
       >
-        {emoji && <span style={{ fontSize: '1.3rem' }}>{emoji}</span>}
+        {trophyColor && <Trophy size={16} color={trophyColor} />}
         <span
           style={{
             fontSize: '1rem',
@@ -96,7 +97,7 @@ const PlayerCell = memo(function PlayerCell({ player }) {
           <div
             style={{
               fontSize: '0.8rem',
-              color: isSuspended ? '#ef4444' : 'var(--color-text-secondary)',
+              color: isSuspended ? '#ef4444' : 'white',
               textTransform: 'capitalize',
             }}
           >
@@ -128,7 +129,7 @@ const PointsCell = memo(function PointsCell({ points }) {
         style={{
           fontSize: '1.3rem',
           fontWeight: '700',
-          color: 'var(--color-primary)',
+          color: 'var(--color-secondary)',
           display: 'inline-flex',
           alignItems: 'center',
           gap: '4px',
