@@ -174,9 +174,10 @@ async function run() {
     .map(round => ({ round_number: round, status: 'pending' }))
 
   if (targetRoundRows.length > 0) {
+    // ignoreDuplicates: true — only INSERT new rounds, never overwrite existing status
     const { error: ensureRoundsError } = await supabase
       .from('rounds')
-      .upsert(targetRoundRows, { onConflict: 'round_number', ignoreDuplicates: false })
+      .upsert(targetRoundRows, { onConflict: 'round_number', ignoreDuplicates: true })
 
     if (ensureRoundsError) {
       throw new Error(`Unable to ensure rounds before match remap: ${ensureRoundsError.message}`)
